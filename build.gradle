@@ -50,7 +50,7 @@ ospackage {
         into solrInstallDir
     }
 
-    from("${solrExtractLocation}/bin/solr") {
+    from("${solrExtractLocation}/bin/init.d/solr") {
         into '/etc/init.d'
         fileMode 0755
         user 'root'
