@@ -1,0 +1,18 @@
+bin/
+target/
+*.prefs
+.DS_Store
+
+*.project
+*.classpath
+
+build/
+.gradle/
+gradle.properties
+*.hprof
+gradle-app.setting
+.idea/
+*.iml
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar

@@ -1,0 +1,96 @@
+
+plugins {
+    id "de.undercouch.download" version "1.2"
+    id "nebula.os-package" version "2.2.6"
+}
+
+repositories {
+    mavenCentral()
+}
+
+import de.undercouch.gradle.tasks.download.Download
+
+group 'com.sdavids'
+version '0.1'
+
+project.ext.solrVersion = '5.2.1'
+project.ext.solrInstallDir = "/opt/solr"
+project.ext.solrVarDir = '/var/solr'
+project.ext.solrHome = "${solrVarDir}/data"
+project.ext.solrLogsDir = "${solrVarDir}/logs"
+project.ext.solrPidDir = '/var/run'
+
+project.ext.solrExtractLocation = "${buildDir}/solr-${solrVersion}"
+
+task downloadSolr(type: Download) {
+    src "http://archive.apache.org/dist/lucene/solr/${solrVersion}/solr-${solrVersion}.tgz"
+    dest new File(buildDir, "solr-${solrVersion}.tgz")
+    onlyIfNewer true
+}
+
+task downloadAndExtractSolr(dependsOn: downloadSolr, type: Copy) {
+    from tarTree(downloadSolr.dest)
+    into buildDir
+}
+
+ospackage {
+    summary "Solr Search Engine"
+    packageDescription summary
+
+    user "solr"
+    permissionGroup "solr"
+
+    preInstall file('scripts/createSolrUser.sh')
+
+    directory(solrLogsDir, 644)
+
+    from (solrExtractLocation) {
+        exclude(['dist/**', 'example/**', 'docs/**'])
+        into solrInstallDir
+    }
+
+    from("${solrExtractLocation}/bin/solr") {
+        into '/etc/init.d'
+        fileMode 0755
+        user 'root'
+        permissionGroup 'root'
+    }
+
+    from("${solrExtractLocation}/bin/solr.in.sh") {
+        filter { line ->
+            switch (line) {
+                case ~/^#?SOLR_HOME=.*/:
+                    return "SOLR_HOME=${solrHome}"
+                case ~/^#?LOG4J_PROPS=.*/:
+                    return "LOG4J_PROPS=${solrVarDir}/log4j.properties"
+                case ~/^#?SOLR_LOGS_DIR=.*/:
+                    return "SOLR_LOGS_DIR=${solrLogsDir}"
+                case ~/^#?SOLR_PID_DIR=.*/:
+                    return "SOLR_PID_DIR=${solrPidDir}"
+                default:
+                    return line
+            }
+        }
+        into solrVarDir
+        fileType CONFIG | NOREPLACE
+        fileMode 0755
+    }
+
+    from("${solrExtractLocation}/server/resources/log4j.properties") {
+        into solrVarDir
+        fileType CONFIG | NOREPLACE
+    }
+
+    from("${solrExtractLocation}/server/solr/solr.xml") {
+        into solrHome
+        fileType CONFIG | NOREPLACE
+    }
+
+}
+
+buildRpm.dependsOn downloadAndExtractSolr
+buildDeb.dependsOn downloadAndExtractSolr
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
