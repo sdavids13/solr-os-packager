@@ -34,11 +34,12 @@ task downloadAndExtractSolr(dependsOn: downloadSolr, type: Copy) {
 }
 
 ospackage {
-    summary "Solr Search Engine"
-    packageDescription summary
+    summary = 'Solr Search Engine'
+    packageDescription = summary
+    os = LINUX
 
-    user "solr"
-    permissionGroup "solr"
+    user = 'solr'
+    permissionGroup = 'solr'
 
     preInstall file('scripts/createSolrUser.sh')
 
