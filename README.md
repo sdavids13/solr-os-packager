@@ -13,6 +13,6 @@ This was tested by creating Centos 6 docker image which will clones this reposit
 installs the resulting RPM, and starts the solr service. You can try it too:
 
 1. `docker build -t solr_rpm_install .`
-    * You will see something along the lines of 'Successfully built <image id>'
+    * You will see something along the lines of `Successfully built <image id>`
 2. `docker run -it <image id>` (image id produced from previous step)
     * This starts the solr process and will start tailing the solr logs.
