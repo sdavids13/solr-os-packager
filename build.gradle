@@ -45,7 +45,6 @@ ospackage {
     user = 'solr'
     permissionGroup = 'solr'
 
-    preInstall file('scripts/createSolrUser.sh')
     postUninstall file('scripts/cleanSolrWebapp.sh')
 
     directory(solrLogsDir, 644)
@@ -91,6 +90,14 @@ ospackage {
         fileType CONFIG | NOREPLACE
     }
 
+}
+
+buildRpm {
+    preInstall file('scripts/rpm/createSolrUser.sh')
+}
+
+buildDeb {
+    preInstall file('scripts/deb/createSolrUser.sh')
 }
 
 buildRpm.dependsOn downloadAndExtractSolr
