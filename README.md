@@ -9,10 +9,10 @@ is used to build the RPM and DEB packages.
 * DEB Build: `./gradlew -PsolrVersion=5.2.1 buildDeb`
 
 ## Testing
-This was tested by creating a Centos 6 docker image which clones this repository, runs the `buildRpm` gradle task, 
+This was tested by creating a Centos 6 & Ubuntu 14 docker images which clones this repository, runs the `buildRpm` gradle task,
 installs the resulting RPM, and starts the solr service. You can try it yourself:
 
-1. `docker build -t solr_rpm_install .`
+1. `docker build -t solr_rpm_install docker/centos/` or... `docker build -t solr_deb_install docker/ubuntu/`
     * You will see something along the lines of `Successfully built <image id>`
 2. `docker run -it <image id>`
     * This starts the solr process and will start tailing the solr logs.
