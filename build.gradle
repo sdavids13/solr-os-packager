@@ -75,6 +75,7 @@ ospackage {
     }
 
     from("${solrExtractLocation}/server/resources/log4j.properties") {
+        filter { line -> line.replaceAll("^solr.log=.*", "solr.log=${solrLogsDir}") }
         into solrVarDir
         fileType CONFIG | NOREPLACE
     }
