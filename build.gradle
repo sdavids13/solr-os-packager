@@ -45,7 +45,7 @@ ospackage {
     user = 'solr'
     permissionGroup = 'solr'
 
-    postUninstall file('scripts/cleanSolrWebapp.sh')
+    preUninstall file('scripts/cleanSolrWebapp.sh')
 
     directory(solrLogsDir, 644)
 
