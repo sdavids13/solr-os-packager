@@ -33,8 +33,13 @@ task downloadAndExtractSolr(dependsOn: downloadSolr, type: Copy) {
 }
 
 ospackage {
+    packageName = 'solr'
     summary = 'Solr Search Engine'
-    packageDescription = summary
+    packageDescription = 'Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene.'
+    vendor = 'Apache Software Foundation (ASF)'
+    url = 'http://lucene.apache.org/solr/'
+    license = 'Apache License, Version 2.0'
+    version = solrVersion
     os = LINUX
 
     user = 'solr'
