@@ -1,6 +1,9 @@
 # solr-os-packager
 Downloads a Solr distribution and generates .rpm or .deb packages. The packaging mimics Solr's install_solr_service.sh script.
 
+## Details
+The generated package places the Solr distribution minus a few unecessary directories (`dist/**`, `example/**`, `docs/**`) in the `/opt/solr` directory which is the "core" Solr installation. The configuration files are stored in `/var/solr` including `log4j.properties` and `solr.in.sh`. Logs will be written to `/var/solr/logs` and the Solr home is located at `/var/solr/data`. To deploy in non Solr Cloud mode, drop your core definition + configuration in the Solr home directory i.e. `/var/solr/data/my-core`. To start up in Solr Cloud mode Solr must be ZooKeeper aware, edit the `/var/solr/solr.in.sh` file to specify your `ZK_HOST`, further options are available including GC tuning, SSL confgiration, and PORT defintion. All changes to the various configuration files defined in `/var/solr` will be preserved across package upgrades. Solr can be started/stopped/etc via `sudo service solr start|stop|restart|status`.
+
 ## Building
 A specified Solr distrubition is downloaded and Netflix's [gradle-ospackage-plugin](https://github.com/nebula-plugins/gradle-ospackage-plugin)
 is used to build the RPM and DEB packages.
