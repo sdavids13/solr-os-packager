@@ -10,7 +10,7 @@ ENV JAVA_HOME /usr/lib/jvm/jre-1.8.0-openjdk/
 RUN yum -y install git
 RUN yum -y install unzip
 
-RUN git clone https://github.com/sdavids13/solr-os-packager.git && \
+RUN git clone https://github.com/sdavids13/solr-os-packager.git
 RUN cd solr-os-packager && \
   git pull && \
   ./gradlew -PsolrVersion=5.2.1 buildRpm && \
