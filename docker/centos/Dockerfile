@@ -10,9 +10,12 @@ ENV JAVA_HOME /usr/lib/jvm/jre-1.8.0-openjdk/
 RUN yum -y install git
 RUN yum -y install unzip
 
-RUN git clone https://github.com/sdavids13/solr-os-packager.git
-RUN cd solr-os-packager && git pull && ./gradlew -PsolrVersion=5.2.1 buildRpm
-RUN yum -y install solr-os-packager/build/distributions/solr-5.2.1.noarch.rpm
+RUN git clone https://github.com/sdavids13/solr-os-packager.git && \
+RUN cd solr-os-packager && \
+  git pull && \
+  ./gradlew -PsolrVersion=5.2.1 buildRpm && \
+  yum -y install build/distributions/solr-5.2.1.noarch.rpm && \
+  ./gradlew clean
 
 EXPOSE 8983
 CMD service solr start && sleep 1 && tail -F /var/solr/logs/solr.log
