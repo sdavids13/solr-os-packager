@@ -1,7 +1,7 @@
 
 plugins {
-    id "de.undercouch.download" version "1.2"
-    id "nebula.os-package" version "2.2.6"
+    id "de.undercouch.download" version "3.1.1"
+    id "nebula.ospackage" version "4.0.0"
 }
 
 repositories {
@@ -13,13 +13,15 @@ import de.undercouch.gradle.tasks.download.Download
 group 'com.sdavids'
 version '0.1'
 
-project.ext.solrVersion = project.hasProperty('solrVersion') ? project.getProperty('solrVersion') : '5.2.1'
-project.ext.solrInstallDir = "/opt/solr"
-project.ext.solrVarDir = '/var/solr'
-project.ext.solrHome = "${solrVarDir}/data"
-project.ext.solrLogsDir = "${solrVarDir}/logs"
+ext {
+    solrVersion = project.hasProperty('solrVersion') ? project.getProperty('solrVersion') : '5.2.1'
+    solrInstallDir = "/opt/solr"
+    solrVarDir = '/var/solr'
+    solrHome = "${solrVarDir}/data"
+    solrLogsDir = "${solrVarDir}/logs"
 
-project.ext.solrExtractLocation = "${buildDir}/solr-${solrVersion}"
+    solrExtractLocation = "${buildDir}/solr-${solrVersion}"
+}
 
 task downloadSolr(type: Download) {
     src "http://archive.apache.org/dist/lucene/solr/${solrVersion}/solr-${solrVersion}.tgz"
@@ -104,5 +106,5 @@ buildRpm.dependsOn downloadAndExtractSolr
 buildDeb.dependsOn downloadAndExtractSolr
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = '3.0'
 }
