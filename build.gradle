@@ -42,6 +42,7 @@ ospackage {
     url = 'http://lucene.apache.org/solr/'
     license = 'Apache License, Version 2.0'
     version = solrVersion
+    release = 1
     os = LINUX
 
     user = 'solr'
