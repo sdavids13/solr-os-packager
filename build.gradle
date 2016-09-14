@@ -14,7 +14,7 @@ group 'com.sdavids'
 version '0.1'
 
 ext {
-    solrVersion = project.hasProperty('solrVersion') ? project.getProperty('solrVersion') : '5.2.1'
+    solrVersion = project.hasProperty('solrVersion') ? project.getProperty('solrVersion') : '5.5.3'
     solrInstallDir = "/opt/solr"
     solrVarDir = '/var/solr'
     solrHome = "${solrVarDir}/data"
@@ -49,7 +49,7 @@ ospackage {
 
     preUninstall file('scripts/cleanSolrWebapp.sh')
 
-    directory(solrLogsDir, 644)
+    directory(solrLogsDir, 0640)
 
     from (solrExtractLocation) {
         exclude(['dist/**', 'example/**', 'docs/**'])
@@ -76,9 +76,11 @@ ospackage {
                     return line
             }
         }
-        into solrVarDir
+        into '/etc/default'
         fileType CONFIG | NOREPLACE
         fileMode 0755
+        user 'root'
+        permissionGroup 'root'
     }
 
     from("${solrExtractLocation}/server/resources/log4j.properties") {
