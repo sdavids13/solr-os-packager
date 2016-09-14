@@ -9,8 +9,8 @@ RUN apt-get -y install git unzip
 RUN git clone https://github.com/sdavids13/solr-os-packager.git
 RUN cd solr-os-packager && \
   git pull && \
-  ./gradlew -PsolrVersion=5.2.1 buildDeb && \
-  dpkg --install /solr-os-packager/build/distributions/solr_5.2.1_all.deb && \
+  ./gradlew buildDeb && \
+  dpkg --install /solr-os-packager/build/distributions/solr_*_all.deb && \
   ./gradlew clean
 
 EXPOSE 8983

@@ -3,18 +3,15 @@
 FROM centos:6
 MAINTAINER Steve Davids
 
-# Upgrading system
-RUN yum -y upgrade
-RUN yum -y install jre-1.8.0-openjdk
-ENV JAVA_HOME /usr/lib/jvm/jre-1.8.0-openjdk/
-RUN yum -y install git
-RUN yum -y install unzip
+ENV JAVA_HOME /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/
+
+RUN yum -y install jre-1.8.0-openjdk git unzip
 
 RUN git clone https://github.com/sdavids13/solr-os-packager.git
 RUN cd solr-os-packager && \
   git pull && \
-  ./gradlew -PsolrVersion=5.2.1 buildRpm && \
-  yum -y install build/distributions/solr-5.2.1.noarch.rpm && \
+  ./gradlew buildRpm && \
+  yum -y install build/distributions/solr-*.noarch.rpm && \
   ./gradlew clean
 
 EXPOSE 8983
