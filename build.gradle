@@ -50,6 +50,8 @@ ospackage {
 
     preUninstall file('scripts/cleanSolrWebapp.sh')
 
+    requires('lsof')
+
     directory(solrLogsDir, 0640)
 
     from (solrExtractLocation) {
